@@ -1,0 +1,18 @@
+@Service
+public class ShoppingCartService {
+    @Autowired
+    private ShoppingCartRepository shoppingCartRepository;
+
+    public ShoppingCart getCart(Long cartId) {
+        return shoppingCartRepository.findById(cartId).orElse(new ShoppingCart());
+    }
+
+    public ShoppingCart addToCart(Long cartId, Product product, int quantity) {
+        ShoppingCart cart = getCart(cartId);
+        CartItem item = new CartItem();
+        item.setProduct(product);
+        item.setQuantity(quantity);
+        cart.getItems().add(item);
+        return shoppingCartRepository.save(cart);
+    }
+}
